@@ -1,6 +1,6 @@
 Attribute VB_Name = "AppMain"
 Rem
-Rem @appname ExcelFormulaEditor - Excel数式らくらく入力アドイン
+Rem @appname ExcelFormulaEditor - エクセル数式らくらく入力アドイン
 Rem
 Rem @module AppMain
 Rem
@@ -8,13 +8,14 @@ Rem @author @KotorinChunChun
 Rem
 Rem @update
 Rem    2020/07/27 : 初回版
+Rem    2020/07/28 : 若干バグ修正
 Rem
 Option Explicit
 Option Private Module
 
-Public Const APP_NAME = "Excel数式らくらく入力アドイン"
+Public Const APP_NAME = "エクセル数式らくらく入力アドイン"
 Public Const APP_CREATER = "@KotorinChunChun"
-Public Const APP_VERSION = "0.10"
+Public Const APP_VERSION = "0.11"
 Public Const APP_UPDATE = "2020/07/27"
 Public Const APP_URL = "https://www.excel-chunchun.com/"
 

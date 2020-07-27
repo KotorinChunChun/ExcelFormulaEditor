@@ -7,6 +7,27 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Rem --------------------------------------------------------------------------------
+Rem
+Rem  @module        ClsFormulaExpression
+Rem
+Rem  @description   Expressionクラス
+Rem
+Rem  @update        2020/07/27
+Rem
+Rem  @author        @KotorinChunChun (GitHub / Twitter)
+Rem
+Rem  @license       MIT (http://www.opensource.org/licenses/mit-license.php)
+Rem
+Rem --------------------------------------------------------------------------------
+Rem
+Rem  @note          このプログラムは下記を参考に独自の改変を行ったものです。
+Rem
+Rem  @quote         ExcelでネストしたIf関数をVBAでインデントして分析しやすくする
+Rem
+Rem  @url           https://thom.hateblo.jp/entry/2017/08/20/122525
+Rem
+Rem --------------------------------------------------------------------------------
 Option Explicit
 
 Public ExpressionString

@@ -31,11 +31,20 @@ Rem
 Rem --------------------------------------------------------------------------------
 Option Explicit
 
+Rem --------------------------------------------------------------------------------
+Rem
+Rem  @note          このプログラムは下記を参考に独自の改変を行ったものです。
+Rem
+Rem  @quote         ExcelでネストしたIf関数をVBAでインデントして分析しやすくする
+Rem
+Rem  @url           https://thom.hateblo.jp/entry/2017/08/20/122525
+Rem
+Rem --------------------------------------------------------------------------------
 Public Enum TokenType
-    Target  'If
+    Target      'If
     BeginParen  '(
     EndParen    ')
-    Comma   ',
+    Comma       ',
     LineFeed    'vbLF
     Exclamation '!
     ErrCode     '#～!
@@ -61,23 +70,23 @@ Private Function GetCharType(C) As CharType
     If C = "" Then GetCharType = CharType.None: Exit Function
     Dim ret As CharType
     Select Case Asc(C)
-    Case Asc("a") To Asc("z"), Asc("A") To Asc("Z")
-        ret = CharType.Alphabet
-    Case Asc("0") To Asc("9")
-        ret = CharType.Number
-    Case Else
-        Select Case True
-            Case C = "(": ret = CharType.BeginParen
-            Case C = ")": ret = CharType.EndParen
-            Case C = ",": ret = CharType.Comma
-            Case C = """": ret = CharType.DoubleQuote
-            Case C = "'": ret = CharType.SingleQuote
-            Case C = vbLf: ret = CharType.LineFeed
-            Case C = "!": ret = CharType.Exclamation
-            Case C = "#": ret = CharType.NumberSign
-            Case Else
-                ret = CharType.Other
-        End Select
+        Case Asc("a") To Asc("z"), Asc("A") To Asc("Z")
+            ret = CharType.Alphabet
+        Case Asc("0") To Asc("9")
+            ret = CharType.Number
+        Case Else
+            Select Case True
+                Case C = "(": ret = CharType.BeginParen
+                Case C = ")": ret = CharType.EndParen
+                Case C = ",": ret = CharType.Comma
+                Case C = """": ret = CharType.DoubleQuote
+                Case C = "'": ret = CharType.SingleQuote
+                Case C = vbLf: ret = CharType.LineFeed
+                Case C = "!": ret = CharType.Exclamation
+                Case C = "#": ret = CharType.NumberSign
+                Case Else
+                    ret = CharType.Other
+            End Select
     End Select
     GetCharType = ret
 End Function
@@ -276,17 +285,22 @@ Rem
 Rem      不正な閉じカッコが出たら以降処理しない
 Rem
 Rem  @example
+Rem    Program
+Rem        FormulaIndentBlock(Selection.formula,3)
+Rem
 Rem    Before
-Rem      =IF(C3="","",IF(C3>60,"○",IF(C3>30,"△","×"))
+Rem        =IF(C3="","",IF(C3>60,"○",IF(C3>30,"△","×"))
 Rem
 Rem    After
-Rem      =IF(C3="",
+Rem        =IF(
+Rem          C3="",
 Rem          "",
-Rem          IF(C3>60,
-Rem              "○",
-Rem              IF(C3>30,
-Rem                  "△",
-Rem                  "×"))
+Rem          IF(
+Rem            C3>60,
+Rem            "○",
+Rem            IF(C3>30,"△","×")
+Rem          )
+Rem        )
 Rem
 Public Function FormulaIndentBlock(ByVal fmr, Optional ByVal indentLevel = 2) As String
     Dim ins As Variant
@@ -350,7 +364,7 @@ Rem  @param rng         Rangeオブジェクト
 Rem
 Rem  @return As Variant 数式の計算結果　計算失敗時は遠慮なくエラーを返す
 Rem
-Function EvaluateEx(ByVal fmr, Optional rng As Range) As Variant
+Public Function EvaluateEx(ByVal fmr, Optional ByVal rng As Range) As Variant
     '自動フォーマットOFFにしないとEvaluateできない
     fmr = FuncExcelFormula.FormulaIndentBlock(fmr, 0)
     
@@ -374,7 +388,7 @@ Rem  @param rng         Rangeオブジェクト
 Rem
 Rem  @return As String  変換後文字列
 Rem
-Function ReplaceByRange(fmr, rng As Range) As String
+Public Function ReplaceByRange(ByVal fmr, ByVal rng As Range) As String
     ReplaceByRange = fmr
     If rng Is Nothing Then Exit Function
     Dim f: f = fmr

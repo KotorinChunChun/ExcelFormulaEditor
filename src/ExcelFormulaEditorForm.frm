@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ExcelFormulaEditorForm 
-   Caption         =   "Excel数式らくらく入力フォーム"
+   Caption         =   "エクセル数式らくらく入力フォーム"
    ClientHeight    =   6570
    ClientLeft      =   120
    ClientTop       =   465
@@ -63,11 +63,12 @@ Private Sub UserForm_Initialize()
     End With
     
     With TabStrip
-        .Tabs(0).caption = "Tree"
+        .Tabs(0).caption = "0:Single"
         Dim i As Long
         For i = 1 To 9
-            .Tabs.add "Block" & i
+            .Tabs.add "" & i & ":Block"
         Next
+        .Tabs(9).caption = "9:Tree"
         .Value = 5 - 1
     End With
     
@@ -124,6 +125,13 @@ Sub TextBoxSetFormula(fmr)
     TextBoxInput.Text = fmr
 End Sub
 
+Rem 数式を取得する
+Function TextBoxGetFormula() As String
+    Dim fmr: fmr = TextBoxInput.Text
+    If Not fmr Like "=*" Then fmr = "=" & fmr
+    TextBoxGetFormula = fmr
+End Function
+
 Rem 結果の取得
 Rem
 Rem @return As Variant(0 to n)  選択されていたアイテム配列
@@ -140,7 +148,7 @@ End Property
 
 Rem 数式変更時
 Private Sub TextBoxInput_Change()
-    Dim fmr: fmr = TextBoxInput.Text
+    Dim fmr: fmr = TextBoxGetFormula()
     Dim v: v = FuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
     Dim txtFormula: txtFormula = "" 'セル参照だけを値に置き換える関数未実装
     
@@ -158,14 +166,15 @@ End Sub
 
 Rem タブ変更時
 Private Sub TabStrip_Change()
-    Call AutoFormat(TextBoxInput.Text)
+    Dim fmr: fmr = TextBoxGetFormula()
+    Call AutoFormat(fmr)
     Dim v: Set v = TabStrip.Tabs(TabStrip.Value)
     'アクティブなタブに着色とかして目立たせたい・・。
 End Sub
 
 Rem 自動フォーマット
 Private Sub AutoFormat(fmr)
-    If TabStrip.Value = 0 Then
+    If TabStrip.Value = 9 Then
         TextBoxFormated.Text = FuncExcelFormula.FormulaIndentTree(fmr)
     Else
         Dim level: level = TabStrip.Value + 1
@@ -176,11 +185,11 @@ End Sub
 Rem ----------
 
 Sub OK_Button_Click()
-    Dim fmr: fmr = TextBoxInput.Text
+    Dim fmr: fmr = TextBoxGetFormula()
     Dim v: v = FuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
     If IsError(v) Then Exit Sub
     
-    If Not fmr Like "=*" Then fmr = "=" & fmr
+    fmr = FuncExcelFormula.ReplaceByRange(fmr, Target)
     If MsgBox("数式をセルに入力します" & vbLf & fmr, vbOKCancel, "数式入力") = vbCancel Then Exit Sub
     
     Excel.ActiveCell.Formula = Replace(fmr, vbCr, "")

@@ -7,22 +7,23 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Rem --------------------------------------------------------------------------------
 Rem
-Rem @module
-Rem   FormulaEditMonitor
+Rem  @module        FormulaEditMonitor
 Rem
-Rem @description
-Rem   数式の入ったセルをダブルクリックしたとき ExcelEvaluateForm を表示する
+Rem  @description   数式の入ったセルをダブルクリックしたとき ExcelFormulaEditorForm を表示する
 Rem
-Rem @note
-Rem　 インスタンスを生成するだけで監視します。
+Rem  @update        2020/07/27
 Rem
-Rem @author
-Rem   @KotorinChunChun
+Rem  @author        @KotorinChunChun (GitHub / Twitter)
 Rem
-Rem @history
-Rem   2020/07/27
+Rem  @license       MIT (http://www.opensource.org/licenses/mit-license.php)
 Rem
+Rem --------------------------------------------------------------------------------
+Rem  @note
+Rem     インスタンスを生成するだけでダブルクリックを監視します。
+Rem
+Rem --------------------------------------------------------------------------------
 Option Explicit
 
 Public WithEvents app As Excel.Application
