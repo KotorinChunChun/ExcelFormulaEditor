@@ -149,7 +149,7 @@ End Property
 Rem 数式変更時
 Private Sub TextBoxInput_Change()
     Dim fmr: fmr = TextBoxGetFormula()
-    Dim v: v = FuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
+    Dim v: v = kccFuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
     Dim txtFormula: txtFormula = "" 'セル参照だけを値に置き換える関数未実装
     
     '式の有効性チェック
@@ -157,7 +157,7 @@ Private Sub TextBoxInput_Change()
     
     '式の情報をリストに追加
     If IsError(v) Then v = CStr(v)
-    Call FuncMSForms.ListBox_AddItem(ListBox, Array(fmr, txtFormula, v), 0)
+    Call kccFuncMSForms.ListBox_AddItem(ListBox, Array(fmr, txtFormula, v), 0)
     ListBox.listIndex = 0
     
     '自動フォーマット結果を表示
@@ -175,10 +175,10 @@ End Sub
 Rem 自動フォーマット
 Private Sub AutoFormat(fmr)
     If TabStrip.Value = 9 Then
-        TextBoxFormated.Text = FuncExcelFormula.FormulaIndentTree(fmr)
+        TextBoxFormated.Text = kccFuncExcelFormula.FormulaIndentTree(fmr)
     Else
         Dim level: level = TabStrip.Value + 1
-        TextBoxFormated.Text = FuncExcelFormula.FormulaIndentBlock(fmr, level)
+        TextBoxFormated.Text = kccFuncExcelFormula.FormulaIndentBlock(fmr, level)
     End If
 End Sub
 
@@ -186,10 +186,10 @@ Rem ----------
 
 Sub OK_Button_Click()
     Dim fmr: fmr = TextBoxGetFormula()
-    Dim v: v = FuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
+    Dim v: v = kccFuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
     If IsError(v) Then Exit Sub
     
-    fmr = FuncExcelFormula.ReplaceByRange(fmr, Target)
+    fmr = kccFuncExcelFormula.ReplaceByRange(fmr, Target)
     If MsgBox("数式をセルに入力します" & vbLf & fmr, vbOKCancel, "数式入力") = vbCancel Then Exit Sub
     
     Excel.ActiveCell.Formula = Replace(fmr, vbCr, "")

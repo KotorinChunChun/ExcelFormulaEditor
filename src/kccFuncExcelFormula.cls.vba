@@ -2,22 +2,26 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "FuncExcelFormula"
+Attribute VB_Name = "kccFuncExcelFormula"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Rem --------------------------------------------------------------------------------
 Rem
-Rem  @module        FuncExcelFormula
+Rem  @module        kccFuncExcelFormula
 Rem
-Rem  @description   Excelの関数式をパースして処理する関数
+Rem  @description   Excelの関数式をパースして処理するモジュール
 Rem
 Rem  @update        2020/07/27
 Rem
 Rem  @author        @KotorinChunChun (GitHub / Twitter)
 Rem
 Rem  @license       MIT (http://www.opensource.org/licenses/mit-license.php)
+Rem
+Rem --------------------------------------------------------------------------------
+Rem  @references
+Rem    不要
 Rem
 Rem --------------------------------------------------------------------------------
 Rem  @refModules
@@ -366,7 +370,7 @@ Rem  @return As Variant 数式の計算結果　計算失敗時は遠慮なくエラーを返す
 Rem
 Public Function EvaluateEx(ByVal fmr, Optional ByVal rng As Range) As Variant
     '自動フォーマットOFFにしないとEvaluateできない
-    fmr = FuncExcelFormula.FormulaIndentBlock(fmr, 0)
+    fmr = FormulaIndentBlock(fmr, 0)
     
     Dim f: f = ReplaceByRange(fmr, rng)
     Dim v: v = Application.Evaluate(f)
@@ -401,3 +405,5 @@ Public Function ReplaceByRange(ByVal fmr, ByVal rng As Range) As String
     If InStr(f, "[column]") > 0 Then f = Replace(f, "[column]", rng.Column)
     ReplaceByRange = f
 End Function
+
+

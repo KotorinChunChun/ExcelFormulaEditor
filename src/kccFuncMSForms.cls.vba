@@ -2,14 +2,14 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "FuncMSForms"
+Attribute VB_Name = "kccFuncMSForms"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Rem --------------------------------------------------------------------------------
 Rem
-Rem  @module        FuncMSForms
+Rem  @module        kccFuncMSForms
 Rem
 Rem  @description   MSFormsのイケてないコントロールを、イイ感じに使うための関数群
 Rem
@@ -49,3 +49,4 @@ Public Function ListBox_AddItem(lb As MSForms.ListBox, insertRowData, Optional B
     Next
     ListBox_AddItem = insertRowIndex
 End Function
+
