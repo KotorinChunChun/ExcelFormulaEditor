@@ -1,0 +1,17 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+	<ribbon startFromScratch="false">
+		<tabs>
+			<tab id="ExcelFormulaEditorTab" label="エクセル数式らくらく入力アドイン">
+				<group id="ExcelFormulaEditorTabGroup1" label="機能">
+					<button id="ExcelFormulaEditorButton01" label="監視開始" imageMso="MediaPlayPreview" size="large" onAction="onAction_AddinStart" />
+					<button id="ExcelFormulaEditorButton02" label="監視停止" imageMso="Media14PausePreview" size="large" onAction="onAction_AddinStop" />
+					<button id="ExcelFormulaEditorButton03" label="数式エディタ起動" imageMso="FormulaEvaluate" size="large" onAction="onAction_OpenFormulaEditorForm" />
+					<separator id="ExcelFormulaEditorSeparator01" />
+					<button id="ExcelFormulaEditorButton97" label="設定" imageMso="CurrentViewSettings" size="large" onAction="onAction_AddinConfig" />
+					<button id="ExcelFormulaEditorButton98" label="情報を表示" imageMso="About" size="large" onAction="onAction_AddinInfo" />
+					<button id="ExcelFormulaEditorButton99" label="アドインを終了" imageMso="XDPPClose" size="large" onAction="onAction_AddinEnd" />
+				</group>
+			</tab>
+		</tabs>
+	</ribbon>
+</customUI>
