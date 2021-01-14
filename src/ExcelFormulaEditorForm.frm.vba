@@ -77,6 +77,10 @@ Private Sub UserForm_Initialize()
     
     TextBoxInput.EnterKeyBehavior = True   'Enterのフォーカス移動を禁止したかったが効果無かった。
     
+    SpinButtonFontSize.Value = TextBoxInput.Font.Size
+    SpinButtonFontSize.Min = 8
+    SpinButtonFontSize.Max = 30
+    
     Me.Hide
 End Sub
 
@@ -98,6 +102,7 @@ Public Function OpenForm(Optional targetRange As Range) As Variant
     '非インデント状態で表示
     On Error Resume Next
     Dim fmr: fmr = Target.Formula
+    CheckBoxFormulaArray.Value = Target.HasArray
     On Error GoTo 0
     Call TextBoxSetFormula(fmr)
     
@@ -109,6 +114,11 @@ Public Function OpenForm(Optional targetRange As Range) As Variant
     OpenForm = Me.Result
     On Error GoTo 0
 End Function
+
+Private Sub SpinButtonFontSize_Change()
+    On Error Resume Next
+    TextBoxInput.Font.Size = SpinButtonFontSize.Value
+End Sub
 
 Rem 数式を反映する
 Sub TextBoxSetFormula(fmr)
@@ -153,7 +163,7 @@ Private Sub TextBoxInput_Change()
     Dim txtFormula: txtFormula = "" 'セル参照だけを値に置き換える関数未実装
     
     '式の有効性チェック
-    TextBoxInput.BackColor = IIf(IsError(v), vbRed, vbWhite)
+    TextBoxInput.BackColor = IIf(IsError(v), 16764159, vbWhite)
     
     '式の情報をリストに追加
     If IsError(v) Then v = CStr(v)
@@ -169,7 +179,7 @@ Private Sub TabStrip_Change()
     Dim fmr: fmr = TextBoxGetFormula()
     Call AutoFormat(fmr)
     Dim v: Set v = TabStrip.Tabs(TabStrip.Value)
-    'アクティブなタブに着色とかして目立たせたい・・。
+    'アクティブなタブに着色とかして目立たせたい・・が、オーナードローが必須とわかり断念
 End Sub
 
 Rem 自動フォーマット
@@ -184,68 +194,103 @@ End Sub
 
 Rem ----------
 
-Sub OK_Button_Click()
-    Dim fmr: fmr = TextBoxGetFormula()
-    Dim v: v = kccFuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
-    If IsError(v) Then Exit Sub
-    
-    fmr = kccFuncExcelFormula.ReplaceByRange(fmr, Target)
-    If MsgBox("数式をセルに入力します" & vbLf & fmr, vbOKCancel, "数式入力") = vbCancel Then Exit Sub
-    
-    Excel.ActiveCell.Formula = Replace(fmr, vbCr, "")
-    Unload Me
-End Sub
+'Sub OK_Button_Click()
+'    Call WriteFormula(False)
+'End Sub
 
 Sub Cancel_Button_Click()
     Unload Me
 End Sub
 
+Sub WriteFormula(isCSE As Boolean)
+    Dim fmr: fmr = TextBoxGetFormula()
+    Dim v: v = kccFuncExcelFormula.EvaluateEx(fmr, Excel.ActiveCell)
+    If IsError(v) Then Exit Sub
+    
+    fmr = kccFuncExcelFormula.ReplaceByRange(fmr, Target)
+    If MsgBox(IIf(isCSE, "配列", "") & "数式をセルに入力します" & vbLf & fmr, vbOKCancel, "数式入力") = vbCancel Then Exit Sub
+    
+    If isCSE Then
+        Excel.ActiveCell.FormulaArray = Replace(fmr, vbCr, "")
+    Else
+        Excel.ActiveCell.Formula = Replace(fmr, vbCr, "")
+    End If
+    
+    Unload Me
+End Sub
+
 Rem ----------
 
-Sub TextBoxInput_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+Sub TextBoxInput_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer): Call Any_KeyDown(KeyCode, Shift): End Sub
+Sub ListBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer): Call Any_KeyDown(KeyCode, Shift): End Sub
+Sub TextBoxFormated_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer): Call Any_KeyDown(KeyCode, Shift): End Sub
+Sub TabStrip_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer): Call Any_KeyDown(KeyCode, Shift): End Sub
+Sub SpinButtonFontSize_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer): Call Any_KeyDown(KeyCode, Shift): End Sub
+Sub CheckBoxFormulaArray_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer): Call Any_KeyDown(KeyCode, Shift): End Sub
+
+Sub Any_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     Dim PressShift As Boolean: PressShift = Shift And 1
     Dim PressCtrl As Boolean: PressCtrl = Shift And 2
     Dim PressAlt As Boolean: PressAlt = Shift And 4
+    If KeyCode = 16 Or KeyCode = 17 Or KeyCode = 18 Then Exit Sub
     
     Select Case KeyCode.Value
     
         'Ctrl+Tabでタブ入力を無効化
-        Case vbKeyTab: If PressCtrl Then KeyCode = 0
-        
+        Case vbKeyTab
+            If PressCtrl And PressShift Then
+                Call CtrlValueIncDec(TabStrip, -1)
+                KeyCode = 0
+            ElseIf PressCtrl Then
+                Call CtrlValueIncDec(TabStrip, 1)
+                KeyCode = 0
+            End If
+'
         'ESCでフォームを閉じる
         Case vbKeyEscape: Cancel_Button_Click
         
         'F5でフォーマット済みの式を採用
         Case vbKeyF5: Call TextBoxSetFormula(TextBoxFormated.Text)
         
-        'Enterで送信 (改行ON時はCtrl+Enter）
+        'Enterで送信 (改行ON時はCtrl+Enter） / CSEで配列数式 / チェックONでも配列数式
         Case vbKeyReturn
-            If TextBoxInput.MultiLine = False Or PressCtrl Then
+            If PressCtrl And PressShift Then
                 KeyCode = 0
-                OK_Button_Click
+                Call WriteFormula(True)
+            ElseIf TextBoxInput.MultiLine = False Or PressCtrl Then
+                KeyCode = 0
+                Call WriteFormula(False Or CheckBoxFormulaArray.Value)
             End If
             
-        'Alt+0～9でタブ切り替え
+        'Alt+0～9でタブ切り替え / 連続実行で採用
         Case vbKey0 To vbKey9
             If PressAlt Then
-                TabStrip.Value = KeyCode - 48
-                KeyCode = 0
+                If TabStrip.Value = KeyCode - 48 Then
+                    Call TextBoxSetFormula(TextBoxFormated.Text)
+                Else
+                    TabStrip.Value = KeyCode - 48
+                    KeyCode = 0
+                End If
             End If
     End Select
-    
 End Sub
 
-Sub ListBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
-    If KeyCode.Value = vbKeyEscape Then Cancel_Button_Click
-    If KeyCode.Value = vbKeyReturn Then OK_Button_Click
-End Sub
-
-Sub TextBoxFormated_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
-    If KeyCode.Value = vbKeyEscape Then Cancel_Button_Click
-    If KeyCode.Value = vbKeyReturn Then OK_Button_Click
-End Sub
-
-Sub TabStrip_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
-    If KeyCode.Value = vbKeyEscape Then Cancel_Button_Click
-    If KeyCode.Value = vbKeyReturn Then OK_Button_Click
+'範囲制限のあるプロパティにはみ出さないように加算減算を行う
+Sub CtrlValueIncDec(ctl As Object, num As Long)
+    Dim Min As Long, Max As Long, Value As Long
+    If TypeName(ctl) = "TabStrip" Then
+        Min = 0
+        Max = ctl.Tabs.Count - 1
+        Value = ctl.Value
+    ElseIf TypeName(ctl) = "SpinButton" Then
+        Min = ctl.Min
+        Max = ctl.Max
+        Value = ctl.Value
+    Else
+        Debug.Print TypeName(ctl)
+        Stop
+    End If
+    Value = Value + num
+    Value = IIf(Value > Max, Max, IIf(Value < Min, Min, Value))
+    ctl.Value = Value
 End Sub

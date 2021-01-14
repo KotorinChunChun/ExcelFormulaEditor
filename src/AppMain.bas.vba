@@ -7,17 +7,18 @@ Rem
 Rem @author @KotorinChunChun
 Rem
 Rem @update
-Rem    2020/07/27 : 初回版
-Rem    2020/07/28 : 若干バグ修正
+Rem    2020/07/27 0.10 初回版
+Rem    2020/07/28 0.11 若干バグ修正
+Rem    2021/01/15 0.12 配列数式対応と操作性向上
 Rem
 Option Explicit
 Option Private Module
 
 Public Const APP_NAME = "エクセル数式らくらく入力アドイン"
 Public Const APP_CREATER = "@KotorinChunChun"
-Public Const APP_VERSION = "0.11"
-Public Const APP_UPDATE = "2020/07/27"
-Public Const APP_URL = "https://www.excel-chunchun.com/"
+Public Const APP_VERSION = "0.12"
+Public Const APP_UPDATE = "2021/01/15"
+Public Const APP_URL = "https://github.com/KotorinChunChun/ExcelFormulaEditor"
 
 Public instExcelFormulaEditerMonitor As ExcelFormulaEditerMonitor
 
