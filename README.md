@@ -15,7 +15,7 @@ Excelの数式を手軽に良い感じでインデントして、数式の編集
 
 ![](https://www.dropbox.com/s/85zcc6qy31md56i/20200730_%E3%82%A8%E3%82%AF%E3%82%BB%E3%83%AB%E3%81%AE%E6%95%B0%E5%BC%8F%E5%85%A5%E5%8A%9B%E3%82%92%E6%A5%BD%E3%81%AB%E3%81%99%E3%82%8B%E3%82%A2%E3%83%89%E3%82%A4%E3%83%B3%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F_01.png?raw=1)
 
-
+<br>
 
 ## 使い方
 
@@ -39,9 +39,6 @@ https://raw.githubusercontent.com/KotorinChunChun/ExcelFormulaEditor/master/bin/
 
 ![](https://www.dropbox.com/s/lh20i9s3qfaejn7/20200730_%E3%82%A8%E3%82%AF%E3%82%BB%E3%83%AB%E3%81%AE%E6%95%B0%E5%BC%8F%E5%85%A5%E5%8A%9B%E3%82%92%E6%A5%BD%E3%81%AB%E3%81%99%E3%82%8B%E3%82%A2%E3%83%89%E3%82%A4%E3%83%B3%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F_03.png?raw=1)
 
-
-
-
 ### 常駐させたい場合
 
 * ファイルをアドインフォルダにコピー
@@ -59,14 +56,39 @@ https://raw.githubusercontent.com/KotorinChunChun/ExcelFormulaEditor/master/bin/
 
 ※アドインを開いた時点で、自動的に「`Ctrl+2`の上書き」と「ダブルクリックの監視」が始まります。
 
+### フォーマットの採用
+
+三通りの方法で画面右側のフォーマットを切り替えられます。
+
+1. `Alt+数字` キー
+2. `Ctrl+TAB` / `Ctrl+Shift+TAB` キー
+3. タブのマウスクリック
+
+二通りの方法で選択中のフォーマットを数式入力ボックスに採用できます。
+
+1. `Alt+数字` キーの連打
+2. `F5` キー
+
+### 入力の確定
+
+* `Ctrl+Enter` で入力を確定（※配列数式チェックボックスの状態に従う）
+* `Ctrl+Shift+Enter` で配列数式として入力を確定
+
+### 入力の取り消し
+
+* `Ctrl+Z` で編集を元に戻す（※フォーマット採用時点以降の変更のみ）
+* `ESC` キーでダイアログを閉じる
+* マウスで×をクリックする
+
+<br>
+
 ## 利用風景
 
 ![](https://www.dropbox.com/s/jnq6612el3y8tq1/20200730_%E3%82%A8%E3%82%AF%E3%82%BB%E3%83%AB%E3%81%AE%E6%95%B0%E5%BC%8F%E5%85%A5%E5%8A%9B%E3%82%92%E6%A5%BD%E3%81%AB%E3%81%99%E3%82%8B%E3%82%A2%E3%83%89%E3%82%A4%E3%83%B3%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F_01.gif?raw=1)
 
 ![](https://www.dropbox.com/s/b0j90th4vurxiqh/20200730_%E3%82%A8%E3%82%AF%E3%82%BB%E3%83%AB%E3%81%AE%E6%95%B0%E5%BC%8F%E5%85%A5%E5%8A%9B%E3%82%92%E6%A5%BD%E3%81%AB%E3%81%99%E3%82%8B%E3%82%A2%E3%83%89%E3%82%A4%E3%83%B3%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F_04.gif?raw=1)
 
-
-
+<br>
 
 ## お約束
 
@@ -90,8 +112,7 @@ https://raw.githubusercontent.com/KotorinChunChun/ExcelFormulaEditor/master/bin/
 
 **世界中に私の生きた証を残すのじゃー！**
 
-
-
+<br>
 
 ## 作者情報
 
@@ -100,10 +121,6 @@ https://raw.githubusercontent.com/KotorinChunChun/ExcelFormulaEditor/master/bin/
 https://twitter.com/KotorinChunChun
 
 https://www.excel-chunchun.com/
-
-<br>
-
-<br>
 
 <br>
 
