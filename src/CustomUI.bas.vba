@@ -12,4 +12,3 @@ Sub onAction_AddinInfo(control As IRibbonControl): Call AddinInfo: FinalUseComma
 Sub onAction_AddinEnd(control As IRibbonControl): Call AddinEnd: FinalUseCommand = "AddinEnd": End Sub
 
 Sub onAction_OpenFormulaEditorForm(control As IRibbonControl): Call OpenFormulaEditorForm: FinalUseCommand = "OpenFormulaEditorForm": End Sub
-

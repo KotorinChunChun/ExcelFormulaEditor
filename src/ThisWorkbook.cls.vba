@@ -12,5 +12,3 @@ Option Explicit
 Private Sub Workbook_Open()
     Call MonitorStart
 End Sub
-
-

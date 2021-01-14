@@ -249,4 +249,3 @@ Sub TabStrip_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Inte
     If KeyCode.Value = vbKeyEscape Then Cancel_Button_Click
     If KeyCode.Value = vbKeyReturn Then OK_Button_Click
 End Sub
-

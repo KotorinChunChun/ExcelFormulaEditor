@@ -55,5 +55,3 @@ Property Get tType() As TokenType
     End Select
     tType = ret
 End Property
-
-

@@ -405,5 +405,3 @@ Public Function ReplaceByRange(ByVal fmr, ByVal rng As Range) As String
     If InStr(f, "[column]") > 0 Then f = Replace(f, "[column]", rng.Column)
     ReplaceByRange = f
 End Function
-
-
